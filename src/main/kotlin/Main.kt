@@ -1,39 +1,71 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowState
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.singleWindowApplication
-import java.awt.SecondaryLoop
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.*
 
-
-fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-
-    }
-}
 
 @Composable
 fun MainWindow(
-    icon: BitmapPainter,
-    windowState: WindowState,
+    onClick: () -> Unit,
     onClose: () -> Unit,
-    onClickOpenSecondWindow: () -> Unit
-){
-    singleWindowApplication(icon = icon) {
-        Text("Hello World!")
+    icon: BitmapPainter,
+    windowState: WindowState
+) {
+    Window(
+        onCloseRequest = onClose,
+        title = "Ventana Principal",
+        icon = icon,
+        state = windowState
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(50.dp),
+            verticalArrangement = Arrangement.spacedBy(100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Estás en la Ventana Principal")
+            Button(onClick = onClick) {
+                Text("Abrir Segunda Ventana")
+            }
+        }
     }
 }
 
 @Composable
-fun SecondaryWindow(
-    icon: BitmapPainter,
-    windowState: WindowState,
+fun SecondWindow(
+    onClick: () -> Unit,
     onClose: () -> Unit,
-    onClickOpenSecondWindow: () -> Unit
-){}
+    icon: BitmapPainter,
+    windowState: WindowState) {
+    Window(
+        onCloseRequest = onClose,
+        title = "Ventana Secundaria",
+        icon = icon,
+        state = windowState
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(50.dp),
+            verticalArrangement = Arrangement.spacedBy(100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Estás en la Ventana Secundaria")
+            Button(onClick = onClick) {
+                Text("Volver a Ventana Principal")
+            }
+        }
+    }
+}
+
+fun main() {
+    val mainWindowState = rememberWindowState()
+    val secondWindowState = rememberWindowState()
+
+    var isMainWindowOpen by remember { mutableStateOf(true) }
+    var isSecondWindowOpen by remember { mutableStateOf(false) }
+
+
+}
